@@ -6,6 +6,7 @@
   "scripts": {
     "scrap": "ts-node ./src/stf-scrap/index.ts --limit=100",
     "merge": "ts-node ./src/json-merge/index.ts",
+    "pdf-down": "ts-node ./src/pdf-downloader/index.ts",
     "start": "nodemon index.js --ignore *.json",
     "dev": "nodemon",
     "pdf": "nodemon pdf.js --ignore *.json",
