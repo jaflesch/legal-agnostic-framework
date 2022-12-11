@@ -1,0 +1,84 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'Acordãos por ministro relator';
+
+append title 
+    title= (page_title || 'LEAF | UFRGS 2022')
+
+block chart 
+  div(style="width:100%; height:auto;")
+    canvas#myChart 
+    div 
+      p#chart
+  
+  script.
+    $(document).ready(() => {
+      Chart.register(ChartDataLabels);
+
+      const dt = !{ chart };
+      const labels = dt.map(d => `${d.monthName ? (d.monthName.slice(0,3) / d.year) : d.year}`);
+
+      const data = {
+        labels,
+        datasets: [{
+          label: 'Acórdãos',
+          backgroundColor: ['#004c6d'],
+          borderColor: ['#004c6d'],
+          borderWidth: 0,
+          borderAlign: 'inner',
+          data: dt.map(d => d.count),
+          datalabels: {
+            color: '#000',
+            anchor: 'end',
+            align: 'end',
+          }
+        }]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          scales: {
+            x: {
+              grid: {
+                color: '#f0f0f0',
+                borderColor: 'gray',
+                tickColor: 'gray',
+              }
+            },
+            y: {
+              grid: {
+                color: '#e0e0e0',
+                borderColor: 'gray',
+                tickColor: 'gray',
+              }
+            },
+            xAxis: [{
+              ticks: {
+                suggestedMin: 500,
+              }
+          }]
+          }
+        },
+        tooltips: {
+          enabled: false
+        },
+        animation: {}
+      };
+
+      const myChart = new Chart(
+        $('#myChart'), config
+      );  
+    })
+    

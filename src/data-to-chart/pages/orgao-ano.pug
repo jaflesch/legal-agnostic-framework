@@ -1,0 +1,154 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'Órgão julgador por ano';
+
+append title 
+    title= (page_title || 'LEAF | UFRGS 2022')
+
+block chart 
+  div#chart-labels(style=`
+    display:none; 
+    padding: 8px; 
+    border:1px solid #ddd;
+    align-items: center;
+    justify-content: center;
+    gap:16px;
+    width:fit-content;
+    margin: 0 auto 1rem;
+  `)
+  div(style="width:90%; height:auto;")
+    canvas#myChart 
+    div 
+      p#chart
+  
+  script.
+    $(document).ready(() => {
+      Chart.register(ChartDataLabels);
+      const dt = !{ chart };
+      const labelYears = {};      
+      const datasetGroups = {};
+      const colors =['#66358f', '#cada3e', '#4771b5'];
+
+      for (const d of dt) {
+        if (labelYears[d.year] === undefined) {
+          labelYears[d.year] = 1;
+        }
+        if (datasetGroups[d.judicialBody] === undefined) {
+          datasetGroups[d.judicialBody] = [];
+        }
+      }
+
+      const groupKeys = Object.keys(datasetGroups)
+      for (const d of dt) {
+        for (const key of groupKeys) {
+          if (key === d.judicialBody) {
+            datasetGroups[d.judicialBody].push(d.count)
+          }
+        }         
+      }
+      
+      const labels = Object.keys(labelYears);
+      const datasets = [
+        {
+          label: groupKeys[0],
+          backgroundColor: colors[0],
+          data: datasetGroups[groupKeys[0]],
+          datalabels: {
+            color: '#fff',
+            anchor: 'center',
+            align: 'center',
+            font: {
+              size: 11,
+            }
+          },
+        },
+        {
+          label: groupKeys[1],
+          backgroundColor: colors[1],
+          data: datasetGroups[groupKeys[1]],
+          datalabels: {
+            color: '#000',
+            anchor: 'center',
+            align: 'center',
+            font: {
+              size: 11,
+            }
+          }
+        },
+       {
+          label: groupKeys[2],
+          backgroundColor:  colors[2],
+          data: datasetGroups[groupKeys[2]],
+          datalabels: {
+            color: '#fff',
+            anchor: 'center',
+            align: 'center',
+            font: {
+              size: 11,
+            }
+          }
+        },
+      ];
+
+      const data = { labels, datasets };
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true
+            }
+          }
+        },
+        tooltips: {
+          enabled: false
+        },
+        animation: {
+          duration: 0,
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.fillStyle = this.chart.config.options.defaultFontColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                ctx.fillText(dataset.data[i], model.x, model.y - 5);
+              }
+            });
+          }
+        }
+      };
+
+      const myChart = new Chart(
+        $('#myChart'), config
+      );  
+
+      const keys = Object.keys(datasetGroups).filter(k => !!k);
+      $('#chart-labels').html(
+        keys.map((l, i) => {
+          return `
+            <div style="display:flex;gap: 8px;align-items: center;">
+              <div style='background-color:${colors[i]};width:28px;height:28px;'></div>
+              <span style='font-size: 14px;font-weight: 600'>${keys[i]}</span>
+            </div>
+          `;
+        }).join('')
+      ).show().css('display', 'flex');          
+    });
+    

@@ -1,0 +1,69 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'Acõrdãos / federação brasileira';
+  
+append head_scripts
+  script(type="text/javascript", src="https://www.gstatic.com/charts/loader.js")
+
+append title 
+  title= page_title
+
+block chart 
+  div#regions_div(style="width: 100%; height: 700px;")
+	
+  script.
+    $(document).ready(() => {
+      const chartData = !{ chart };
+
+      const maxValue = Math.max(...chartData.map(cd => cd.count));
+      const normalizedChartData = chartData.map(cd => ({
+        ...cd,
+        normalizedCount: Math.log(cd.count) / Math.log(100) + (cd.count / maxValue / 2)
+      }));
+      const minNormalizedValue = Math.min(...normalizedChartData.map(c => c.normalizedCount));
+
+      google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+      });
+
+      google.charts.setOnLoadCallback(() => {
+        const data = google.visualization.arrayToDataTable([
+          ['Federação', 'Acórdãos'],
+          ...normalizedChartData.map(cd => ([
+            {
+              v: cd.location,
+              f: cd.locationText,
+            },
+            {
+              v: cd.normalizedCount,
+              f: Number(cd.count).toLocaleString()
+            }
+          ]))
+        ]);
+
+        const options = {
+          region: 'BR',
+          resolution: 'provinces',
+          legend: {
+            textStyle: {
+              color: 'transparent', 
+              fontSize: 14
+            }
+          },
+          geochartVersion: 10,
+          colorAxis: {
+            minValue: minNormalizedValue,  
+            colors: ['#ece5d9','#caef90', '#dac73e', '#ff5858']
+          },          
+          backgroundColor: {
+            fill: '#9cc0f9',
+          }
+        };
+
+        const chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+        chart.draw(data, options);
+      });
+    });
+    

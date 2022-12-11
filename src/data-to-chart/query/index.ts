@@ -1,0 +1,13 @@
+export { JudgementsByYearQuery } from './judgement-by-year.query';
+export { JudicialBodyCountQuery } from './judicial-body-count.query';
+export { JudicialBodyByYearQuery } from './judicial-body-by-year.query';
+export { JudgementsByWriterQuery } from './judgements-by-writer.query';
+export { JudgementsByRappoteurQuery } from './judgements-by-rappoteur.query';
+export { JudgementsByLocationCountQuery } from './judgements-by-location-count.query';
+export { JudgementsByDocumentCategoryCountQuery } from './judgements-by-document-category-count.query';
+export { JudgementsByDocumentCategoryYearQuery } from './judgements-by-document-category-year.query';
+export { JudgementsByDecisionTypeQuery } from './judgements-by-decision-type.query';
+export { JudgementsByDecisionDelayedQuery }  from './judgements-by-decision-delayed.query';
+export { VotesByJudgementQuery } from './votes-by-judgement.query';
+export { VotesByMinisterQuery } from './votes-by-minister.query';
+export { VotesMonocraticByYearQuery } from './votes-monocratic-by-year.query';

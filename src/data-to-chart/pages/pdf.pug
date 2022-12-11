@@ -1,0 +1,12 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'pdf reading';
+
+append title 
+    title= (page_title || 'PDF READ')
+
+block chart 
+  div(style="width:80%; height:auto;")
+    div!= text
+    

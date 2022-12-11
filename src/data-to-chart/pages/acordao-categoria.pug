@@ -1,0 +1,112 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'Órgão julgador por ano';
+  
+append title 
+    title= (page_title || 'LEAF | UFRGS 2022')
+
+block chart 
+  div(style="display:flex;align-items:center;flex-direction:column;")
+    div#filter(style="align-self:flex-start")
+      form
+        div(class="row align-items-end")
+          div.col-auto 
+            label(for="startAt", class="small") De:
+            input(id="start-at" class="form-control", type="number", name="startAt", min="1893", max="2022", placeholder="1893")
+
+          div.col-auto 
+            label(for="startAt", class="small") Até:
+            input(id="end-at" class="form-control", type="number", name="endAt", min="1893", max="2022", placeholder="2022")
+            
+          div.col-auto 
+            button(class="btn btn-primary") Pesquisar
+    
+    hr(style="width:100%; border-color:#aaa;")
+    
+    div(style=(Number(limit) > 0 ? "width:75%;" : "height:150vh;width:100%"))
+      canvas#myChart 
+    
+    div
+      div#chart-labels(style='display:none; padding: 8px; border:1px solid #ddd;')
+  
+  script.
+    $(document).ready(() => {
+      const urlParams = new URLSearchParams(location.search);
+      Chart.register(ChartDataLabels);
+
+      const dt = !{ chart };
+      const chartData = dt.map(d => d.count);
+      const labels = dt.map(d => d.categoryLabel);
+      const colors = ['#4771b5'];  
+      const hasYear = Number(urlParams.get('startAt')) > 0;
+
+      $('#end-at').val(urlParams.get('endAt'));
+      $('#start-at').val(urlParams.get('startAt'));
+
+      const data = {
+        labels,
+        datasets: [{
+          label: 'Acórdãos',
+          backgroundColor: colors,
+          borderWidth: 0,
+          borderAlign: 'outer',
+          data: chartData,          
+        }]
+      };
+
+      const config = {
+        data,
+        type: 'bar',
+        options: {
+          indexAxis: 'y',
+          scales: {
+            y: {
+              ticks: {
+                crossAlign: 'far',
+              }
+            }
+          },
+          barPercentage: 0.8,
+          categoryPercentage: 0.8,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: { 
+              display: false 
+            },
+            datalabels: {
+              anchor: 'end',
+              align: 'end',
+              formatter: (val) => val,
+              labels: {
+                value: {
+                  color: '#000'
+                }
+              }
+            },
+          },
+        },
+        tooltips: {
+          enabled: false
+        },
+      };
+
+      const myChart = new Chart(
+        $('#myChart'), config
+      );
+
+      $('#chart-labels').html(
+        labels.map((l, i) => {
+          return `
+            <div style="display:flex;gap: 8px;margin-bottom: ${(i === labels.length - 1) ? 0 : '8px'}; align-items: center;">
+              <div style='background-color:${colors[i % colors.length]};width:28px;height:28px;'></div>
+              <span style='font-size: 14px;font-weight: 600'>${l} (${chartData[i]})</span>
+            </div>
+          `;
+        }).join('')
+      );    
+    });
+    

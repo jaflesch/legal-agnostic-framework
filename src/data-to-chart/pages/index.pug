@@ -1,0 +1,232 @@
+extends templates/home
+
+block variables 
+  - var page_title = 'Exemplo';
+
+append head_scripts   
+  script.
+    $(document).ready(() => {
+      $('.section-title button').on("click", function() {
+        const target = $(this).attr("data-target");
+        const isOpen = $(target).hasClass("show");
+        $(target).collapse('toggle');        
+
+        $(this).find('.material-icons').text(isOpen ? 'expand_more' : 'expand_less')
+      });
+    });
+
+append title 
+    title= (page_title || 'LEAF | UFRGS 2022')
+
+block main 
+  div(class="container mb-4")
+    div#accordion 
+    
+    div(class="section-title border-bottom pb-2 mb-4 mt-4")
+      h3 Acordãos
+      button(data-toggle="collapse", data-target="#sec-acordaos", aria-expanded="true", aria-controls="collapseOne", class="btn")
+        span.material-icons expand_less
+
+    div(id="sec-acordaos", class="collapse show" data-parent="#accordion")
+      div(class="row")
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / ano
+
+              p(class="card-text") Total de acórdãos por ano (ou período)
+              a(href="/acordao-ano", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / relator
+
+              p(class="card-text") Acórdãos agrupados por relatores
+              a(href="/acordao-relator", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / relator / ano
+
+              p(class="card-text") Acórdãos de um relator agrupados por ano
+              a(href="/acordao-relator?byName=true", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / redator
+
+              p(class="card-text") Acórdãos agrupados por redatores
+              a(href="/acordao-redator", class="btn btn-outline-primary btn-sm") Ver dados
+
+      div(class="row")
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / redator / ano
+              p(class="card-text") Acórdãos de um redator agrupados por ano
+              a(href="/acordao-redator?byName=true", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") pie_chart
+              h5(class="card-title") Acórdãos / Órgão 
+              p(class="card-text") Acórdãos agrupados pelo Órgão julgador
+              a(href="/acordao-orgao", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") stacked_bar_chart
+              h5(class="card-title") Acórdãos / Órgão / ano
+
+              p(class="card-text") Acórdãos agrupados por Órgão julgador e ano
+              a(href="/acordao-orgao-ano", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col mb-4")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / categoria
+
+              p(class="card-text") Acordãos agrupados por tipo de documento
+              a(href="/acordao-categoria", class="btn btn-outline-primary btn-sm") Ver dados
+
+      div(class="row")
+      div(class="col-3")
+        div(class="card custom-card")
+          div(class="card-body")
+            div(class="icon")
+              span(class="material-icons") area_chart
+
+            h5(class="card-title") Acórdãos / categoria / ano
+            p(class="card-text") Grupos por tipo de documento e ano
+            a(href="/acordao-categoria-ano?startAt=2022&endAt=2022", class="btn btn-outline-primary btn-sm") Ver dados
+    
+    div(class="section-title border-bottom pb-2 mb-4 mt-4")
+      h3 Decisões
+      button(data-toggle="collapse", data-target="#sec-decisoes", aria-expanded="true", aria-controls="collapseTwo", class="btn")
+        span.material-icons expand_less
+
+    div(id="sec-decisoes", class="collapse show" data-parent="#accordion") 
+      div(class="row")
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") pie_chart
+              h5(class="card-title") Tipo de decisão
+
+              p(class="card-text") Maioria de votos ou unanimidade
+              a(href="/decisao-tipo", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") stacked_bar_chart
+              h5(class="card-title") Tipo de decisão / ano
+
+              p(class="card-text") Decisão por tipo agrupadas por ano
+              a(href="/decisao-tipo-ano", class="btn btn-outline-primary btn-sm") Ver dados
+        
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") pie_chart
+              h5(class="card-title") Adiamentos
+
+              p(class="card-text") Votação e/ou decisão adiados ou não
+              a(href="decisao-adiamento", class="btn btn-outline-primary btn-sm") Ver dados
+
+
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") stacked_bar_chart
+              h5(class="card-title") Adiamentos / ano
+
+              p(class="card-text") Adiamentos agrupados por ano
+              a(href="decisao-adiamento-ano", class="btn btn-outline-primary btn-sm") Ver dados
+
+    div(class="section-title border-bottom pb-2 mb-4 mt-4")
+      h3 Votos
+      button(data-toggle="collapse", data-target="#sec-votos", aria-expanded="true", aria-controls="collapseThree", class="btn")
+        span.material-icons expand_less
+
+    div(id="sec-votos", class="collapse show" data-parent="#accordion") 
+      div(class="row")
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") pie_chart
+              h5(class="card-title") Votos / acordão
+
+              p(class="card-text") Quantidade de votos por acórdãos
+              a(href="/votos-acordao", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Votos / ministro
+
+              p(class="card-text") Decisão por maioria de votos ou unânime
+              a(href="/votos-ministro", class="btn btn-outline-primary btn-sm") Ver dados
+
+        div(class="col col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") bar_chart
+              h5(class="card-title") Votos monocráticos / ano
+
+              p(class="card-text") Decisões com voto de um magistrado por ano
+              a(href="/votos-monocraticos-ano", class="btn btn-outline-primary btn-sm") Ver dados
+
+    div(class="section-title border-bottom pb-2 mb-4 mt-4")
+      h3 Localizações
+      button(data-toggle="collapse", data-target="#sec-localizacao", aria-expanded="true", aria-controls="collapseFour", class="btn")
+        span.material-icons expand_less
+        
+    div(id="sec-localizacao", class="collapse show" data-parent="#accordion") 
+      div(class="row")
+        div(class="col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / federação
+
+              p(class="card-text") Exibe acórdãos por estados brasileiros
+              a(href="/local-federacao", class="btn btn-outline-primary btn-sm") Ver dados
+        
+        div(class="col-3")
+          div(class="card custom-card")
+            div(class="card-body")
+              div(class="icon")
+                span(class="material-icons") equalizer
+              h5(class="card-title") Acórdãos / Estado
+
+              p(class="card-text") Exibe acórdãos por país relacionado
+              a(href="/local-estado", class="btn btn-outline-primary btn-sm") Ver dados

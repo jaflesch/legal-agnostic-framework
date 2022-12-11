@@ -1,0 +1,119 @@
+extends templates/layout
+
+block variables 
+  - var page_title = 'Acordãos por ministro relator';
+
+append title 
+    title= (page_title || 'LEAF | UFRGS 2022')
+
+block chart 
+  div
+    canvas#myChart 
+    div 
+      p#chart
+  
+  script.
+    $(document).ready(() => {
+      const queryName = location.search.match(/name/)?.length;
+      Chart.register(ChartDataLabels);
+
+      const dt = !{ chart };
+      console.log(dt);
+      const labels = dt.map(d => queryName 
+        ? (
+          d.monthName 
+          ? `${d.monthName.slice(0,3)} / ${d.year}`
+          : d.year
+        ) : d.rappoteur
+      );
+
+      const data = {
+        labels,
+        datasets: [{
+          label: 'Acórdãos',
+          backgroundColor: ['#004c6d'],
+          borderColor: ['#004c6d'],
+          borderWidth: 0,
+          borderAlign: 'inner',
+          data: dt.map(d => d.count),
+          datalabels: {
+            color: '#000',
+            anchor: 'end',
+            align: 'end',
+          }
+        }]
+      };
+
+      const axisConfig = queryName ? {} : {
+        indexAxis: 'y',
+        scales: {
+          y: {
+            ticks: {
+              crossAlign: 'far',
+            }
+          }
+        },
+      }
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          ...axisConfig,
+          barPercentage: 0.8,
+          categoryPercentage: 0.8,
+          maintainAspectRatio: queryName,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: queryName,
+              text: new URLSearchParams(location.search).get('name'),
+            },
+          },
+          scales: {
+            x: {
+              grid: {
+                color: '#f0f0f0',
+                borderColor: 'gray',
+                tickColor: 'gray',
+              }
+            },
+            y: {
+              grid: {
+                color: '#e0e0e0',
+                borderColor: 'gray',
+                tickColor: 'gray',
+              }
+            }
+          }
+        },
+        tooltips: {
+          enabled: false
+        },
+        animation: {
+          duration: 0,
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.fillStyle = this.chart.config.options.defaultFontColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                ctx.fillText(dataset.data[i], model.x, model.y - 5);
+              }
+            });
+          }
+        }
+      };
+
+      $('#myChart').parent().attr('style', queryName ? "width:90%; height:auto;" : "width:100%;height:100vh");
+
+      const myChart = new Chart(
+        $('#myChart'), config
+      );  
+    })
+    
