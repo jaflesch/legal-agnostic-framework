@@ -1,0 +1,7 @@
+node_modules/
+json/
+pdf/
+db/
+.DS_Store
+.env
+txt/
