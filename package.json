@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "scrap": "ts-node ./src/stf-scrap/index.ts --limit=100",
+    "merge": "ts-node ./src/json-merge/index.ts",
     "start": "nodemon index.js --ignore *.json",
     "dev": "nodemon",
     "pdf": "nodemon pdf.js --ignore *.json",
-    "scrap": "ts-node ./src/stf-scrap/index.ts --limit=100",
     "st": "ts-node ./src/index.ts --",
     "pdf2text": "ts-node ./src/pdf2text.ts --src=a --dest=b",
     "pdflist": "ts-node ./src/pdf-to-text/infra/pdflist.ts --src=a --dest=b",
     "words": "ts-node ./src/words.ts",
     "words-doc": "ts-node ./src/words-by-doc.ts",
-    "merge": "ts-node ./src/merge.ts",
     "db": "ts-node ./src/mongo.ts",
     "chart": "ts-node ./src/chart.ts",
     "ndc": "nodemon"
