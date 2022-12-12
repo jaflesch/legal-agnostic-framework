@@ -11,5 +11,7 @@ import { PageController } from './PageController';
     main.execute();
   } catch (err) {
     console.log(err);
+  } finally {
+    process.exit();
   }
 })();
