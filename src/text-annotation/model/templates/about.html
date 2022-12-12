@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <style>
+      body {
+        background-color: #f7f7f7;
+      }
+      #output {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        margin: 30px auto;
+        border: 2px solid #eee;
+        max-width: 800px;
+      }
+      .label {
+        padding: 2px 4px;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .container .col {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+    <title> LeAF + LeNER-BR</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="col">
+        <div id="output"></div>
+      </div>
+    </div>
+    <script>
+      console.log('templates/about.html');
+      var a = `{{ content }}`;
+      
+      const b = a.trim().split('\n');
+      let out = '';
+      
+      for (const t of b) {
+        let color = '#fff';
+        let category = t.substr(0,3);
+        let word = '';
+
+        if (category.match(/\[[A-z]\]/)) {
+          color = '#fff';
+          word = t.substr(3).replace(/\[.*\]/g, '');
+          category = category.replace(/\[|\]/g, '');
+        } else {
+          word = t.substr(0, t.length - 3);
+        }
+        
+        switch (category) {
+          case 'p':
+            color = '#ea9999';
+            break;
+          case 't':
+            color = '#93c47d';
+            break;
+          case 'l':
+            color = '#ffe599';
+            break;
+          case 'o':
+            color = '#6fa8dc';
+            break;
+          case 'J':
+            color = '#c27ba0';
+            break;
+          case 'L':
+            color = '#e69138';
+            break;
+          case 'e':
+            color = '#555';
+            break;
+        }
+        let space = true;
+        if (['.',',','?','!',':', '`', '"', "'", ';'].includes(word)) {
+          space = false;
+        }
+        out += `${space ? ' ' : ''}<span class=${color === '#fff' ? "" : "label"} style='background-color:${color}'>${word}</span>`;
+      }
+
+      document.getElementById('output').innerHTML += out + '<hr style="border-top:2px solid #ddd;margin:2rem 0 1rem;opacity:1;" />';
+    </script>
+  </body>
+</html>
