@@ -1,7 +1,8 @@
 node_modules/
-json/
-pdf/
 db/
+pdf/
+txt/
+json/
+merge/
 .DS_Store
 .env
-txt/
