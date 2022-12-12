@@ -1,8 +1,8 @@
 import path from 'path';
 import colors from 'colors';
 import { existsSync, writeFileSync } from "fs";
-import { GetPdfUrlsQuery } from '../get-pdf-urls.query';
-import { args } from './pdf-list-args';
+import { GetPdfUrlsQuery } from './get-pdf-urls.query';
+import { args } from './args';
 
 const walkParent = (givenPath: string, steps: number): string => {
   let newPath = givenPath;
