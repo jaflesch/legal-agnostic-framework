@@ -1,4 +1,4 @@
-# Json Merge Service
+# JsonMerge Service
 
 This service is responsible for unifying all JSONs generated for each page in the STF Scrap service.
 
