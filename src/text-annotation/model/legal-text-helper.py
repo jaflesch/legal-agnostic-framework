@@ -7,4 +7,4 @@ def index():
     with open('output.txt', 'r', encoding='utf8') as file:
         text = file.read().replace('`', "'")
 
-    return render_template('about.html', content=text)
+    return render_template('index.html', content=text)
