@@ -9,11 +9,13 @@ For more information, please read the [LeNER-Br](https://github.com/peluz/lener-
 ### Pre-requisites
 
 ```txt
-nltk==3.2.4
-numpy==1.14.2
-scikit-learn==0.19.1
-tensorflow==1.7.0
-Flask==1.1.4
+Package            Version
+----------------   ---------
+nltk               ^3.2.4
+numpy              ^1.14.2
+scikit-learn       ^0.19.1
+tensorflow         ^1.7.0
+Flask              ^1.1.4
 ```
 
 ### Usage
